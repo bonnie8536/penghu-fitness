@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>澎湖肌力動起來！健康增肌多元運動班｜線上報名</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1F7A70;
+    --teal-dark: #155B54;
+    --teal-light: #E3F1EE;
+    --yellow: #FFD84D;
+    --red: #E8474B;
+    --orange: #F05A28;
+    --orange-light: #FFF1EA;
+    --cream: #FBF4E8;
+    --ink: #2E3A38;
+    --gray: #7A8886;
+    --white: #FFFFFF;
+    --radius: 18px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 18px;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 0 16px 60px; }
+
+  /* ===== 首頁影片主視覺 ===== */
+  .hero-video {
+    position: relative;
+    width: 100%;
+    height: 68vh;
+    min-height: 360px;
+    max-height: 640px;
+    overflow: hidden;
+    background: var(--teal-dark); /* 影片與封面都失敗時的底色 */
+  }
+  .hero-video video,
+  .hero-video .hv-cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-video .hv-cover {
+    display: none; /* 平時隱藏；影片載入失敗或減少動態時才顯示 */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .hero-video .hv-overlay {
+    position: absolute;
+    inset: 0;
+    /* 半透明深色遮罩，確保文字清楚 */
+    background: linear-gradient(180deg, rgba(15,50,46,.35) 0%, rgba(15,50,46,.5) 55%, rgba(15,50,46,.8) 100%);
+    z-index: 1;
+  }
+  .hero-video .hv-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px 18px;
+    color: var(--white);
+  }
+  .hv-content h1 {
+    font-size: 54px;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: 6px;
+    text-shadow: 2px 3px 10px rgba(0,0,0,.55);
+  }
+  .hv-content .hv-sub {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: 12px 0 24px;
+    text-shadow: 1px 2px 8px rgba(0,0,0,.55);
+  }
+  .hv-content .hv-btn {
+    box-shadow: 0 6px 0 #B93538, 0 8px 20px rgba(0,0,0,.35);
+  }
+  @media (max-width: 600px) {
+    .hero-video { height: 60vh; min-height: 320px; }
+    .hv-content h1 { font-size: 40px; letter-spacing: 4px; }
+    .hv-content .hv-sub { font-size: 20px; margin: 10px 0 20px; }
+  }
+  /* 使用者開啟「減少動態效果」：不播放影片、改顯示封面圖 */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-video video { display: none !important; }
+    .hero-video .hv-cover { display: block !important; }
+  }
+
+  /* ===== 頂部黃色斜帶 ===== */
+  .top-banner {
+    background: var(--yellow);
+    padding: 14px 16px 18px;
+    text-align: center;
+    clip-path: polygon(0 0, 100% 0, 100% 78%, 0 100%);
+  }
+  .top-banner span {
+    color: var(--red);
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 4px;
+  }
+
+  /* ===== 主視覺 ===== */
+  .hero { text-align: center; padding: 26px 8px 10px; }
+  .hero h1 {
+    color: var(--teal);
+    font-weight: 900;
+    font-size: 52px;
+    line-height: 1.25;
+    letter-spacing: 6px;
+    text-shadow: 3px 3px 0 rgba(255, 216, 77, .55);
+  }
+  .hero h1 .spark { font-size: 40px; text-shadow: none; }
+  .hero-badge {
+    display: inline-block;
+    background: var(--teal);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 3px;
+    padding: 8px 26px;
+    border-radius: 10px;
+    margin: 18px 0 14px;
+    box-shadow: 4px 4px 0 rgba(255, 216, 77, .8);
+  }
+  .hero-times { font-size: 24px; font-weight: 900; color: var(--ink); }
+  .hero-times div { margin: 2px 0; }
+  .trial-price {
+    margin-top: 14px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--teal);
+  }
+  .trial-price b { color: var(--red); font-size: 28px; }
+
+  /* ===== 價目卡 ===== */
+  .price-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 26px 0 10px;
+  }
+  @media (max-width: 600px) { .price-cards { grid-template-columns: 1fr; } }
+  .price-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(46, 58, 56, .08);
+  }
+  .price-card .card-head {
+    padding: 12px 18px;
+    color: var(--white);
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: 2px;
+  }
+  .price-card.general .card-head { background: var(--teal); }
+  .price-card.member .card-head { background: var(--orange); }
+  .price-card ul { list-style: none; padding: 8px 18px 16px; }
+  .price-card li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    padding: 12px 0;
+    border-bottom: 1px dashed #E3DCCB;
+    font-size: 19px;
+    font-weight: 700;
+  }
+  .price-card li:last-child { border-bottom: none; }
+  .price-card .p { white-space: nowrap; text-align: right; }
+  .price-card.general .p { color: var(--teal); font-size: 24px; font-weight: 900; }
+  .price-card.member .p { color: var(--orange); font-size: 24px; font-weight: 900; }
+  .price-card .orig {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--gray);
+    text-decoration: line-through;
+  }
+  /* 已額滿的價目列 */
+  .price-card li.sold { opacity: .6; }
+  .price-card li.sold .p { color: var(--gray) !important; text-decoration: line-through; font-size: 20px; }
+  .price-card li.sold .li-sold {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 13px;
+    font-weight: 900;
+    color: #fff;
+    background: var(--gray);
+    border-radius: 5px;
+    padding: 1px 7px;
+    vertical-align: middle;
+  }
+
+  .cta-row { text-align: center; margin: 20px 0 6px; }
+  .btn-cta {
+    display: inline-block;
+    background: var(--red);
+    color: var(--white);
+    font-weight: 900;
+    font-size: 26px;
+    letter-spacing: 4px;
+    padding: 16px 48px;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 6px 0 #B93538;
+  }
+  .btn-cta:active { transform: translateY(3px); box-shadow: 0 3px 0 #B93538; }
+
+  /* ===== 報名區 ===== */
+  .section-title {
+    text-align: center;
+    color: var(--teal);
+    font-weight: 900;
+    font-size: 32px;
+    letter-spacing: 4px;
+    margin: 44px 0 6px;
+  }
+  .status-badge {
+    display: block;
+    width: fit-content;
+    margin: 0 auto 18px;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 4px 18px;
+    border-radius: 999px;
+    background: #E7F6E9;
+    color: #237A3C;
+  }
+  .status-badge.closed { background: #FBE4E4; color: #B93538; }
+
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 26px 22px;
+    box-shadow: 0 4px 14px rgba(46, 58, 56, .08);
+  }
+
+  .field { margin-bottom: 22px; }
+  .field > label.f-label {
+    display: block;
+    font-weight: 900;
+    font-size: 20px;
+    color: var(--teal-dark);
+    margin-bottom: 8px;
+  }
+  .field .req { color: var(--red); }
+  input[type="text"], input[type="tel"], textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 20px;
+    padding: 12px 14px;
+    border: 2px solid #D8E4E1;
+    border-radius: 12px;
+    background: #FCFEFD;
+    color: var(--ink);
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--teal); }
+  textarea { min-height: 90px; resize: vertical; }
+
+  .pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill {
+    position: relative;
+    flex: 1 1 auto;
+    text-align: center;
+  }
+  .pill input { position: absolute; opacity: 0; pointer-events: none; }
+  .pill span {
+    display: block;
+    padding: 12px 16px;
+    border: 2px solid #D8E4E1;
+    border-radius: 12px;
+    font-size: 19px;
+    font-weight: 700;
+    background: #FCFEFD;
+    cursor: pointer;
+    user-select: none;
+  }
+  .pill input:checked + span {
+    border-color: var(--teal);
+    background: var(--teal);
+    color: var(--white);
+  }
+  .pill.orange input:checked + span {
+    border-color: var(--orange);
+    background: var(--orange);
+  }
+
+  .plan-list { display: flex; flex-direction: column; gap: 10px; }
+  .plan-item { position: relative; }
+  .plan-item input { position: absolute; opacity: 0; pointer-events: none; }
+  .plan-item .plan-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    border: 2px solid #D8E4E1;
+    border-radius: 12px;
+    background: #FCFEFD;
+    cursor: pointer;
+    user-select: none;
+  }
+  .plan-item input:checked + .plan-box {
+    border-color: var(--teal);
+    background: var(--teal-light);
+    box-shadow: 0 0 0 2px var(--teal) inset;
+  }
+  .plan-name { font-weight: 900; font-size: 20px; }
+  .plan-orig { font-size: 14px; color: var(--gray); text-decoration: line-through; font-weight: 400; display: block; }
+  .plan-price { font-weight: 900; font-size: 24px; color: var(--red); white-space: nowrap; }
+
+  /* 已額滿的方案：灰化、不可點 */
+  .plan-item.sold-out .plan-box {
+    cursor: not-allowed;
+    background: #F1F1F1;
+    border-color: #DcDcDc;
+    border-style: dashed;
+    opacity: .72;
+  }
+  .plan-item.sold-out .plan-name { color: var(--gray); }
+  .plan-item.sold-out .plan-price { color: var(--gray); font-size: 20px; }
+  .sold-badge {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 15px;
+    font-weight: 900;
+    color: #fff;
+    background: var(--gray);
+    border-radius: 6px;
+    padding: 2px 8px;
+    vertical-align: middle;
+  }
+
+  /* 「會員優惠價」限協會會員的提醒 */
+  .member-only-note {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--orange);
+    background: var(--orange-light);
+    border-radius: 10px;
+    padding: 10px 14px;
+  }
+  .member-only-note b { color: var(--red); }
+  .price-card .card-head .head-sub {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0;
+    opacity: .95;
+    margin-top: 2px;
+  }
+
+  /* 依身分別切換的價格提示標題 */
+  .plan-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--teal-light);
+    color: var(--teal-dark);
+  }
+  .plan-hint.member { background: var(--orange-light); color: var(--orange); }
+  @keyframes priceflash {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.22); }
+    100% { transform: scale(1); }
+  }
+  .plan-price.flash { animation: priceflash .5s ease; display: inline-block; }
+
+  /* ===== 選擇上課日期 ===== */
+  .course-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--teal-light);
+    color: var(--teal-dark);
+  }
+  .course-hint.full { background: #E7F6E9; color: #237A3C; }
+  .course-hint.over { background: #FBE4E4; color: #B93538; }
+  .course-hint.pc { background: var(--orange-light); color: var(--orange); }
+  .course-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 360px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 2px solid #D8E4E1;
+    border-radius: 12px;
+    background: #FCFEFD;
+    -webkit-overflow-scrolling: touch;
+  }
+  .course-item { position: relative; }
+  .course-item input { position: absolute; opacity: 0; pointer-events: none; }
+  .course-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 2px solid #E7E0D2;
+    border-radius: 10px;
+    background: var(--white);
+    cursor: pointer;
+    user-select: none;
+  }
+  .course-item input:checked + .course-box {
+    border-color: var(--teal);
+    background: var(--teal-light);
+  }
+  .course-item input:disabled + .course-box { opacity: .42; cursor: not-allowed; }
+  .course-check {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 2px solid #D8E4E1;
+    background: var(--white);
+    color: transparent;
+    font-size: 17px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .course-item input:checked + .course-box .course-check {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: var(--white);
+  }
+  .course-date { font-weight: 900; font-size: 17px; color: var(--teal-dark); white-space: nowrap; text-align: center; }
+  .course-date .course-wk { display: block; font-size: 12px; font-weight: 500; color: var(--gray); }
+  .course-main { flex: 1; min-width: 0; }
+  .course-name { display: block; font-size: 16px; font-weight: 700; line-height: 1.4; }
+  .course-time { display: block; font-size: 13px; color: var(--gray); }
+  /* 方案已包含全部課程時：整份清單為唯讀，但要維持清楚好讀（不變灰） */
+  .course-list.fixed .course-item input:disabled + .course-box { opacity: 1; cursor: default; }
+  .course-list.fixed .course-box {
+    cursor: default;
+    border-color: var(--teal-light);
+    background: var(--teal-light);
+  }
+  .course-list.fixed .course-check {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: var(--white);
+  }
+  /* 澎澄班用橘色系（要壓過上面「已勾選」的藍綠色，選擇器要更明確）*/
+  .course-list.fixed.pc .course-item input:checked + .course-box {
+    border-color: #F5D9C6;
+    background: var(--orange-light);
+  }
+  .course-list.fixed.pc .course-item input:checked + .course-box .course-check {
+    background: var(--orange);
+    border-color: var(--orange);
+  }
+  .course-list.fixed.pc .course-date { color: var(--orange); }
+
+  /* ===== 注意事項 ===== */
+  .notice-card {
+    background: #FFF8E1;
+    border: 2px solid var(--yellow);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 22px;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.65;
+    color: #6E5200;
+  }
+  .notice-card .notice-title {
+    display: block;
+    font-size: 19px;
+    font-weight: 900;
+    color: var(--orange);
+    margin-bottom: 6px;
+  }
+  .notice-card b { color: var(--red); }
+  .notice-card .notice-line { margin: 8px 0 0; }
+  .notice-card .notice-line:first-of-type { margin-top: 0; }
+
+  /* ===== 常見問題專區 ===== */
+  .faq-q {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--teal-dark);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .faq-plan {
+    border-radius: 12px;
+    padding: 14px 16px 16px;
+    margin-bottom: 12px;
+    border-left: 6px solid var(--teal);
+    background: var(--teal-light);
+  }
+  .faq-plan:last-child { margin-bottom: 0; }
+  .faq-plan h4 {
+    font-size: 19px;
+    font-weight: 900;
+    color: var(--teal-dark);
+    margin-bottom: 8px;
+  }
+  .faq-plan p { font-size: 17px; line-height: 1.65; margin: 6px 0; }
+  .faq-plan p:first-of-type { margin-top: 0; }
+  .faq-plan b { color: var(--red); }
+  .faq-check { list-style: none; padding: 0; margin: 0; }
+  .faq-check li {
+    font-size: 17px;
+    line-height: 1.6;
+    padding: 5px 0 5px 26px;
+    position: relative;
+  }
+  .faq-check li::before {
+    content: "✔";
+    position: absolute;
+    left: 2px;
+    color: var(--teal);
+    font-weight: 900;
+  }
+  /* 24堂：藍綠（預設）；12/6堂：藍；澎澄：橘 */
+  .faq-plan.blue { border-left-color: #2E86AB; background: #EAF4F9; }
+  .faq-plan.blue h4 { color: #1E5F7E; }
+  .faq-plan.orange { border-left-color: var(--orange); background: var(--orange-light); }
+  .faq-plan.orange h4 { color: var(--orange); }
+
+  .amount-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--teal-light);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    font-weight: 900;
+    font-size: 22px;
+    color: var(--teal-dark);
+  }
+  .amount-bar b { color: var(--red); font-size: 30px; }
+
+  .btn-submit {
+    width: 100%;
+    border: none;
+    background: var(--red);
+    color: var(--white);
+    font-family: inherit;
+    font-weight: 900;
+    font-size: 26px;
+    letter-spacing: 6px;
+    padding: 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #B93538;
+  }
+  .btn-submit:disabled { background: #C9C2B4; box-shadow: none; cursor: not-allowed; }
+  .btn-submit:not(:disabled):active { transform: translateY(3px); box-shadow: 0 3px 0 #B93538; }
+  .form-msg { margin-top: 14px; text-align: center; font-weight: 700; color: var(--red); min-height: 1.5em; }
+
+  /* ===== 報名成功 ===== */
+  #success-view { display: none; }
+  .success-head { text-align: center; margin-bottom: 18px; }
+  .success-head .big { font-size: 54px; }
+  .success-head h2 { color: var(--teal); font-size: 30px; font-weight: 900; letter-spacing: 3px; }
+  .recap { background: var(--teal-light); border-radius: 12px; padding: 16px 18px; margin-bottom: 18px; }
+  .recap div { display: flex; justify-content: space-between; padding: 6px 0; font-size: 19px; border-bottom: 1px dashed #C6DED9; }
+  .recap div:last-child { border-bottom: none; }
+  .recap .k { color: var(--teal-dark); font-weight: 700; white-space: nowrap; }
+  .recap .v { font-weight: 900; text-align: right; }
+  .pay-card {
+    background: var(--orange-light);
+    border: 2px solid var(--orange);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+  }
+  .pay-card h3 { color: var(--orange); font-size: 22px; font-weight: 900; margin-bottom: 8px; }
+  .pay-card p { font-size: 19px; font-weight: 700; margin: 4px 0; }
+  .pay-card .warn { font-size: 17px; color: var(--red); font-weight: 700; margin-top: 10px; }
+  .line-card { text-align: center; padding: 10px 0 4px; }
+  .line-card img { width: 150px; height: 150px; border-radius: 10px; border: 1px solid #E3DCCB; }
+  .line-card p { font-weight: 700; margin: 8px 0; }
+  .btn-line {
+    display: inline-block;
+    background: #06C755;
+    color: var(--white);
+    font-weight: 900;
+    font-size: 20px;
+    padding: 10px 30px;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+  .btn-again {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    background: var(--teal);
+    color: var(--white);
+    border: none;
+    font-family: inherit;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 3px;
+    padding: 14px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  /* ===== 截止卡片 ===== */
+  #closed-view { display: none; text-align: center; }
+  #closed-view .big { font-size: 50px; }
+  #closed-view h2 { color: var(--red); font-size: 28px; font-weight: 900; margin: 8px 0 14px; }
+  #closed-notice { white-space: pre-line; font-size: 19px; font-weight: 500; text-align: left; background: #FDF0F0; border-radius: 12px; padding: 16px 18px; margin-bottom: 18px; }
+
+  /* ===== 首頁官方 LINE 區塊 ===== */
+  .line-block {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 22px 20px;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(46, 58, 56, .07);
+  }
+  .line-block .line-qr {
+    width: 200px;
+    height: 200px;
+    max-width: 70vw;
+    border-radius: 12px;
+    border: 1px solid #E3DCCB;
+  }
+  .line-block .line-tip { font-size: 18px; font-weight: 700; margin: 12px 0 16px; }
+  .line-block .line-tip b { color: #06C755; }
+
+  /* ===== 頁尾 ===== */
+  footer { text-align: center; margin-top: 44px; color: var(--gray); font-size: 16px; }
+  footer .org { font-weight: 900; color: var(--teal); font-size: 18px; }
+
+  /* ===== 浮動 Q&A ===== */
+  #qa-fab {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--yellow);
+    border: 3px solid var(--white);
+    box-shadow: 0 4px 14px rgba(46, 58, 56, .3);
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 60;
+  }
+  #qa-panel {
+    display: none;
+    position: fixed;
+    right: 16px;
+    bottom: 94px;
+    width: min(360px, calc(100vw - 32px));
+    max-height: 60vh;
+    overflow-y: auto;
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(46, 58, 56, .3);
+    z-index: 60;
+  }
+  #qa-panel .qa-head {
+    position: sticky;
+    top: 0;
+    background: var(--teal);
+    color: var(--white);
+    font-weight: 900;
+    font-size: 20px;
+    padding: 12px 16px;
+  }
+  .qa-item { border-bottom: 1px solid #EEE8DA; }
+  .qa-item summary {
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 12px 16px;
+    list-style: none;
+  }
+  .qa-item summary::before { content: "❓ "; }
+  .qa-item p { padding: 0 16px 14px; font-size: 17px; color: #4A5654; }
+
+  /* ===== 內容區塊共用 ===== */
+  .block { margin-top: 40px; }
+  .block-title {
+    text-align: center;
+    color: var(--teal);
+    font-weight: 900;
+    font-size: 30px;
+    letter-spacing: 3px;
+    margin-bottom: 4px;
+  }
+  .block-sub { text-align: center; color: var(--gray); font-size: 17px; font-weight: 700; margin-bottom: 18px; }
+
+  /* ===== 可收合的大區塊（教練陣容 / 課程表）===== */
+  .block-collapse { margin-top: 40px; }
+  .block-collapse > summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    color: var(--teal);
+    font-weight: 900;
+    font-size: 28px;
+    letter-spacing: 3px;
+    padding: 16px 20px;
+    background: var(--white);
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(46, 58, 56, .07);
+  }
+  .block-collapse > summary::-webkit-details-marker { display: none; }
+  .block-collapse > summary .toggle-hint {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--gray);
+    letter-spacing: 0;
+  }
+  .block-collapse > summary::after { content: "▾"; font-size: 22px; color: var(--orange); }
+  .block-collapse[open] > summary::after { content: "▴"; }
+  .block-collapse[open] > summary { border-radius: 14px 14px 0 0; }
+  .block-collapse .collapse-body { padding-top: 16px; }
+
+  .open-badge {
+    display: block;
+    width: fit-content;
+    margin: 0 auto 16px;
+    background: var(--red);
+    color: var(--white);
+    font-weight: 900;
+    font-size: 18px;
+    padding: 6px 22px;
+    border-radius: 999px;
+  }
+
+  /* ===== 課程內容（兩階段） ===== */
+  .stage-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 14px rgba(46, 58, 56, .07);
+    margin-bottom: 14px;
+  }
+  .stage-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    color: var(--teal-dark);
+    font-size: 21px;
+    font-weight: 900;
+    margin-bottom: 10px;
+  }
+  .stage-title .stage-no {
+    background: var(--teal);
+    color: var(--white);
+    font-size: 15px;
+    padding: 3px 12px;
+    border-radius: 999px;
+  }
+  .stage-title .stage-min {
+    background: var(--yellow);
+    color: var(--ink);
+    font-size: 15px;
+    padding: 3px 12px;
+    border-radius: 999px;
+  }
+  .stage-desc { font-size: 17px; line-height: 1.65; margin-bottom: 10px; }
+  .stage-desc b { color: var(--orange); }
+  .check-list { list-style: none; padding: 0; }
+  .check-list li {
+    font-size: 17px;
+    line-height: 1.55;
+    padding: 6px 0 6px 28px;
+    position: relative;
+    border-bottom: 1px dashed #EEE8DA;
+  }
+  .check-list li:last-child { border-bottom: none; }
+  .check-list li::before {
+    content: "✔";
+    position: absolute;
+    left: 2px;
+    color: var(--teal);
+    font-weight: 900;
+  }
+  .stage-note {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--teal-dark);
+    background: var(--teal-light);
+    border-radius: 10px;
+    padding: 10px 14px;
+  }
+  .stage-card.plan-feature { background: var(--orange-light); border: 2px solid var(--orange); }
+  .stage-card.plan-feature .stage-title { color: var(--orange); }
+  .stage-card.plan-feature .check-list li::before { color: var(--orange); }
+  .stage-card.plan-feature .check-list li { border-bottom-color: #F5D9C6; }
+
+  /* ===== 五大特色 ===== */
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .feature-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 18px 16px;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(46, 58, 56, .07);
+  }
+  .feature-card .fi { font-size: 40px; }
+  .feature-card h3 { color: var(--teal-dark); font-size: 21px; font-weight: 900; margin: 6px 0 4px; }
+  .feature-card p { font-size: 16px; color: #4A5654; line-height: 1.5; }
+
+  /* ===== 上課地點 / 單位 ===== */
+  .loc-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 14px rgba(46, 58, 56, .07);
+    margin-bottom: 12px;
+  }
+  .loc-card h3 { color: var(--orange); font-size: 20px; font-weight: 900; margin-bottom: 4px; }
+  .loc-card p { font-size: 18px; font-weight: 700; }
+  .loc-card .addr { color: #4A5654; font-weight: 500; font-size: 17px; }
+  .org-line { text-align: center; font-size: 16px; color: var(--gray); margin-top: 10px; line-height: 1.8; }
+  .org-line b { color: var(--teal); }
+
+  /* ===== 教練陣容 ===== */
+  .coach-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 520px) { .coach-grid { grid-template-columns: 1fr; } }
+  .coach-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 18px 16px;
+    box-shadow: 0 4px 14px rgba(46, 58, 56, .07);
+    text-align: center;
+  }
+  .coach-avatar {
+    width: 64px; height: 64px;
+    margin: 0 auto 8px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    border: 2px solid var(--teal);
+    color: var(--teal-dark);
+    font-size: 30px; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .coach-name { color: var(--teal); font-size: 21px; font-weight: 900; margin-bottom: 8px; }
+  .coach-creds { list-style: none; padding: 0; text-align: left; }
+  .coach-creds li { font-size: 15px; color: #4A5654; line-height: 1.45; padding-left: 16px; position: relative; margin-bottom: 4px; }
+  .coach-creds li::before { content: "•"; color: var(--orange); position: absolute; left: 2px; font-weight: 900; }
+
+  /* ===== 課程表 ===== */
+  .sched {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(46, 58, 56, .07);
+    margin-bottom: 14px;
+  }
+  .sched > summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 16px 18px;
+    background: var(--teal);
+    color: var(--white);
+    font-size: 20px;
+    font-weight: 900;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .sched > summary::-webkit-details-marker { display: none; }
+  .sched > summary::after { content: "▾"; font-size: 20px; }
+  .sched[open] > summary::after { content: "▴"; }
+  .sched-note { padding: 12px 16px; font-size: 15px; color: #4A5654; background: var(--cream); }
+  .sched-tbl { width: 100%; border-collapse: collapse; }
+  .sched-tbl td { padding: 11px 8px; border-bottom: 1px solid #EEE8DA; font-size: 16px; vertical-align: middle; }
+  .sched-tbl .d { font-weight: 900; color: var(--teal-dark); white-space: nowrap; }
+  .sched-tbl .wk { font-size: 13px; color: var(--gray); display: block; font-weight: 500; }
+  .sched-tbl .t { color: #4A5654; white-space: nowrap; font-size: 14px; }
+  .sched-tbl .c { font-weight: 700; }
+  .sched-tbl .v { font-size: 13px; color: var(--gray); white-space: nowrap; }
+  .sched-tbl tr.pc { background: var(--orange-light); }
+  .sched-tbl tr.pc .v, .sched-tbl tr.pc .c { color: var(--orange); }
+  .sched-tbl tr.pc .d { color: var(--orange); }
+
+  /* ===== 會員福利 / 早鳥 ===== */
+  .benefit-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 14px rgba(46, 58, 56, .07);
+    margin-bottom: 12px;
+  }
+  .benefit-card h3 { color: var(--teal); font-size: 21px; font-weight: 900; margin-bottom: 8px; }
+  .fee-line { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .fee-line b { color: var(--red); }
+  .benefit-card ul { list-style: none; padding: 0; }
+  .benefit-card li { font-size: 17px; padding: 5px 0 5px 26px; position: relative; }
+  .benefit-card li::before { content: "✔"; color: var(--teal); position: absolute; left: 2px; font-weight: 900; }
+  .earlybird { background: var(--orange-light); border: 2px solid var(--orange); }
+  .earlybird h3 { color: var(--orange); }
+  .earlybird .hl { color: var(--red); font-weight: 900; }
+</style>
+</head>
+<body>
+
+<!-- 首頁影片主視覺（滿版、自動播放、靜音、循環；載入失敗或減少動態時顯示封面圖） -->
+<section class="hero-video">
+  <video id="hero-video" autoplay muted loop playsinline preload="auto"
+         poster="assets/images/fitness-hero-cover.webp">
+    <source src="assets/videos/fitness-hero.mp4" type="video/mp4">
+  </video>
+  <div class="hv-cover" id="hv-cover" style="background-image:url('assets/images/fitness-hero-cover.webp')"></div>
+  <div class="hv-overlay"></div>
+  <div class="hv-content">
+    <h1>澎湖肌力動起來！</h1>
+    <p class="hv-sub">健康增肌多元運動班</p>
+    <a href="#signup" class="btn-cta hv-btn">立即報名</a>
+  </div>
+</section>
+
+<div class="top-banner"><span>一起運動・一起變健康！</span></div>
+
+<div class="wrap">
+
+  <!-- 主視覺 -->
+  <div class="hero">
+    <h1>澎湖肌力<br>動起來！<span class="spark">💪✨</span></h1>
+    <div class="hero-badge">健康增肌多元運動班</div>
+    <div class="hero-times">
+      <div>每週三晚上 19:30－21:00</div>
+      <div>每週日下午 14:30－16:00</div>
+    </div>
+  </div>
+
+  <!-- 五大特色 -->
+  <div class="block">
+    <h2 class="block-title">課程特色</h2>
+    <p class="block-sub">正確體位發力指導 · 科學肌力訓練</p>
+    <span class="open-badge">8/02 週日正式開課 · 熱烈招生中</span>
+    <p class="block-sub" style="color:var(--red); font-weight:900; margin-top:-8px;">每班招生名額 25 人・額滿為止</p>
+    <div class="feature-grid">
+      <div class="feature-card"><div class="fi">💪</div><h3>增強肌力</h3><p>提升肌肉力量<br>改善體態線條</p></div>
+      <div class="feature-card"><div class="fi">❤️</div><h3>核心有氧</h3><p>提升心肺耐力<br>增加身體活力</p></div>
+      <div class="feature-card"><div class="fi">🧍</div><h3>舒緩痠痛</h3><p>改善肩頸腰背<br>提升活動能力</p></div>
+      <div class="feature-card"><div class="fi">👥</div><h3>多元訓練</h3><p>肌力·核心·有氧<br>伸展·平衡·協調</p></div>
+    </div>
+  </div>
+
+  <!-- 課程內容（可收合） -->
+  <details class="block-collapse">
+    <summary>課程內容<span class="toggle-hint">（點我展開）</span></summary>
+    <div class="collapse-body">
+      <p class="block-sub">每堂 90 分鐘＝ 30 分鐘體適能檢測 ＋ 60 分鐘運動課程</p>
+
+      <div class="stage-card">
+        <h3 class="stage-title"><span class="stage-no">第一階段</span>體適能檢測與健康促進<span class="stage-min">30 分鐘</span></h3>
+        <p class="stage-desc">透過簡易體適能檢測及健康促進活動，建立學員健康管理觀念，內容包含：</p>
+        <ul class="check-list">
+          <li>身高、體重、BMI 測量</li>
+          <li>身體組成分析（體脂肪率、肌肉量、內臟脂肪、體水份率）</li>
+          <li>血壓檢測</li>
+          <li>血氧檢測</li>
+          <li>抗氧化健康指數檢測</li>
+          <li>三分鐘登階心肺耐力測驗</li>
+          <li>坐姿體前彎柔軟度測驗</li>
+          <li>仰臥起坐肌耐力測試</li>
+          <li>一分鐘坐站測驗</li>
+          <li>平衡能力測驗</li>
+          <li>身體反應測試</li>
+          <li>健康運動知識宣導</li>
+          <li>運動飲食營養知識宣導</li>
+          <li>運動舒緩按摩知識宣導</li>
+        </ul>
+        <p class="stage-note">📋 並定期於課程前、中、後進行追蹤紀錄，作為課程成效評估依據。</p>
+      </div>
+
+      <div class="stage-card">
+        <h3 class="stage-title"><span class="stage-no">第二階段</span>多元增肌運動課程<span class="stage-min">60 分鐘</span></h3>
+        <p class="stage-desc">透過<b>彈力帶、注水啞鈴、瑜珈球／墊、筋膜球、滾筒及徒手訓練</b>等方式進行，提升學員<b>肌力耐力、平衡能力、反應能力、柔軟度及心肺耐力</b>。</p>
+        <p class="stage-note">🗓️ 每堂課程主題依上方「課程表」安排。</p>
+      </div>
+
+      <div class="stage-card plan-feature">
+        <h3 class="stage-title">本計畫特色</h3>
+        <ul class="check-list">
+          <li>結合體適能健康檢測與運動介入服務</li>
+          <li>推動女性及職工族群分眾化運動課程</li>
+          <li>強化肌力、核心及功能性動作能力</li>
+          <li>改善久坐族群常見肩頸腰背不適問題</li>
+          <li>建立規律運動與自主健康管理習慣</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <!-- 上課地點 -->
+  <div class="block">
+    <h2 class="block-title">上課地點</h2>
+    <div class="loc-card">
+      <h3>📍 皇家多元活動中心</h3>
+      <p class="addr">馬公市新生路 439 號 2 樓</p>
+    </div>
+    <div class="loc-card">
+      <h3>📍 澎澄極限運動教室</h3>
+      <p class="addr">澎湖縣馬公市光復里同和路 158 號 4 樓</p>
+    </div>
+    <p class="org-line">
+      指導單位：<b>運動部全民運動署 · 澎湖縣政府</b><br>
+      主辦單位：<b>澎湖縣皇家樂活健康運動協會</b>
+    </p>
+  </div>
+
+  <!-- 教練陣容（可收合） -->
+  <details class="block-collapse">
+    <summary>皇家教練陣容<span class="toggle-hint">（點我展開）</span></summary>
+    <div class="collapse-body">
+    <p class="block-sub">專業證照師資 · 安心跟著練</p>
+    <div class="coach-grid">
+      <div class="coach-card">
+        <div class="coach-avatar">哲</div>
+        <div class="coach-name">林哲玄 教練</div>
+        <ul class="coach-creds">
+          <li>NSCA-CPT 美國肌力與體能協會私人教練認證</li>
+          <li>SNPA 運動營養實務研習認證</li>
+          <li>台灣急救推廣中心 CPR+AED 急救證</li>
+        </ul>
+      </div>
+      <div class="coach-card">
+        <div class="coach-avatar">國</div>
+        <div class="coach-name">林國智 教練</div>
+        <ul class="coach-creds">
+          <li>中華民國 健身 C 級教練證照</li>
+          <li>AFAA 美國體適能教練證照</li>
+          <li>NASM 美國國家運動醫學學會 營養教練證照</li>
+        </ul>
+      </div>
+      <div class="coach-card">
+        <div class="coach-avatar">致</div>
+        <div class="coach-name">黃致宏 教練</div>
+        <ul class="coach-creds">
+          <li>中華民國健身 B 級教練證照</li>
+          <li>前國家保齡球國手</li>
+          <li>台灣國立體育大學</li>
+          <li>皇家增肌多元運動班指導教練</li>
+        </ul>
+      </div>
+      <div class="coach-card">
+        <div class="coach-avatar">菁</div>
+        <div class="coach-name">葛菁菁 教練</div>
+        <ul class="coach-creds">
+          <li>中華民國健身協會 C 級教練</li>
+          <li>皇家樂活健康運動協會專任教練</li>
+          <li>皇家多元增肌運動班各社區專任教練</li>
+          <li>澎湖縣社區規劃師</li>
+        </ul>
+      </div>
+      <div class="coach-card">
+        <div class="coach-avatar">進</div>
+        <div class="coach-name">邱進榮 教練</div>
+        <ul class="coach-creds">
+          <li>中華民國 C 級健身教練證照</li>
+          <li>皇家增肌多元運動班指導教練</li>
+          <li>屏東東港環美社區班指導教練</li>
+          <li>高雄岡山社區運動班指導教練</li>
+        </ul>
+      </div>
+      <div class="coach-card">
+        <div class="coach-avatar">奕</div>
+        <div class="coach-name">李奕墩 教練</div>
+        <ul class="coach-creds">
+          <li>中華民國健身 C 級教練證照</li>
+          <li>樂齡功能性平衡訓練教練證照</li>
+          <li>嘉義縣中埔鄉樂齡體適能健身教練</li>
+          <li>嘉義縣約翰樂活護理之家健身教練</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+  </details>
+
+  <!-- 課程表（可收合） -->
+  <details class="block-collapse">
+    <summary>課程表<span class="toggle-hint">（點我展開）</span></summary>
+    <div class="collapse-body">
+    <p class="block-sub">每堂 90 分鐘（30 分鐘體適能測驗 + 60 分鐘運動課程）</p>
+
+    <details class="sched" open>
+      <summary>🏛️ 皇家多元活動中心（8/02～11/04）</summary>
+      <table class="sched-tbl" id="sched-main"></table>
+    </details>
+
+    <details class="sched">
+      <summary>🏅 澎澄運動班（5 堂 +1）</summary>
+      <div class="sched-note">📍 澎澄極限運動教室｜🎁 全勤五堂加碼再贈送「皇家多元活動中心課程一堂」；每堂課後均贈送介丘咖啡特調・優質蛋白奶昔 1 杯</div>
+      <table class="sched-tbl" id="sched-pc"></table>
+    </details>
+    </div>
+  </details>
+
+  <!-- 會員福利 -->
+  <div class="block">
+    <h2 class="block-title">會員福利</h2>
+    <div class="benefit-card">
+      <h3>👑 協會會員福利</h3>
+      <p class="fee-line">入會費 <b>200 元</b>　常年會費 <b>200 元／年</b></p>
+      <ul>
+        <li>課程會員優惠價</li>
+        <li>優先報名活動</li>
+        <li>優先錄取熱門課程</li>
+        <li>會員專屬健康講座</li>
+        <li>合作店家優惠（陸續增加）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 課程費用（緊接在報名表單前） -->
+  <div class="block">
+    <h2 class="block-title">課程費用</h2>
+    <div class="trial-price">單堂課程體驗價 <b>$250</b></div>
+
+    <div class="price-cards">
+      <div class="price-card general">
+        <div class="card-head">全民運動補助方案</div>
+        <ul>
+          <li class="sold"><span>24堂完整班<span class="li-sold">已額滿</span><span class="orig">原價 $6,000</span></span><span class="p">3,600元</span></li>
+          <li><span>12堂精選班<span class="orig">原價 $3,000</span></span><span class="p">2,000元</span></li>
+          <li><span>6堂體驗班<span class="orig">原價 $1,500</span></span><span class="p">1,100元</span></li>
+          <li class="sold"><span>澎澄運動班（5堂+1）<span class="li-sold">已額滿</span><span class="orig">單堂體驗價 $450</span></span><span class="p">1,500元</span></li>
+        </ul>
+      </div>
+      <div class="price-card member">
+        <div class="card-head">👑 會員優惠價<span class="head-sub">協會會員專屬</span></div>
+        <ul>
+          <li class="sold"><span>24堂完整班<span class="li-sold">已額滿</span></span><span class="p">3,400元</span></li>
+          <li><span>12堂精選班</span><span class="p">1,900元</span></li>
+          <li><span>6堂體驗班</span><span class="p">1,050元</span></li>
+          <li class="sold"><span>澎澄運動班（5堂+1）<span class="li-sold">已額滿</span></span><span class="p">1,400元</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cta-row"><a class="btn-cta" href="#signup">立即報名</a></div>
+  </div>
+
+  <!-- 報名表單 -->
+  <div id="signup">
+    <h2 class="section-title">線上報名</h2>
+    <span class="status-badge" id="status-badge">🟢 開放報名中</span>
+
+    <div class="card" id="form-view">
+      <form id="signup-form" novalidate>
+        <div class="field">
+          <label class="f-label">姓名 <span class="req">＊</span></label>
+          <input type="text" id="f-name" autocomplete="name" placeholder="請輸入您的姓名">
+        </div>
+
+        <div class="field">
+          <label class="f-label">聯絡電話 <span class="req">＊</span></label>
+          <input type="tel" id="f-phone" autocomplete="tel" placeholder="例：0912345678">
+        </div>
+
+        <div class="field">
+          <label class="f-label">身分別 <span class="req">＊</span></label>
+          <div class="pills" id="identity-pills">
+            <label class="pill"><input type="radio" name="identity" value="全民運動補助方案" checked><span>全民運動補助方案</span></label>
+            <label class="pill orange"><input type="radio" name="identity" value="會員優惠價"><span>👑 會員優惠價</span></label>
+          </div>
+          <p class="member-only-note">👑「會員優惠價」為<b>協會會員專屬</b>，非會員請選「全民運動補助方案」</p>
+        </div>
+
+        <div class="field">
+          <label class="f-label">報名方案 <span class="req">＊</span></label>
+          <div class="plan-hint" id="plan-hint"></div>
+          <div class="plan-list" id="plan-list"></div>
+        </div>
+
+        <div class="field" id="course-field">
+          <label class="f-label">選擇上課日期 <span class="req">＊</span></label>
+          <div class="course-hint" id="course-hint"></div>
+          <div class="course-list" id="course-list"></div>
+        </div>
+
+        <div class="field">
+          <label class="f-label">特殊狀況或備註<span style="font-weight:400; font-size:16px; color:var(--gray)">（選填）</span></label>
+          <textarea id="f-note" placeholder="例：膝蓋開過刀、有高血壓等，讓教練更了解您的狀況"></textarea>
+        </div>
+
+        <div class="notice-card">
+          <span class="notice-title">⚠️ 報名注意事項</span>
+          <p class="notice-line">👥 每班招生名額 <b>25 人</b>，<b>額滿為止</b>，請及早報名！</p>
+          <p class="notice-line">🔁 報名後如需<b>更動或取消課程</b>，請於該堂課<b>開始兩週前</b>透過<b>官方 LINE</b> 告知我們，以便安排上課人數，感謝您的配合！</p>
+        </div>
+
+        <div class="amount-bar"><span>應繳金額</span><b id="amount-display">請先選擇方案</b></div>
+
+        <button type="submit" class="btn-submit" id="btn-submit">送出報名</button>
+        <div class="form-msg" id="form-msg"></div>
+      </form>
+    </div>
+
+    <!-- 報名成功 -->
+    <div class="card" id="success-view">
+      <div class="success-head">
+        <div class="big">🎉</div>
+        <h2>報名成功！</h2>
+        <p id="dup-note" style="display:none; color:var(--red); font-weight:700;">（提醒：您先前已用相同資料報名過，若是重複送出請告訴我們一聲喔！）</p>
+      </div>
+      <div class="recap" id="recap"></div>
+      <div class="pay-card">
+        <h3>💳 轉帳資訊</h3>
+        <p>郵局代號：700</p>
+        <p>戶名：澎湖縣皇家樂活健康運動協會 許怡節</p>
+        <p>帳號：0041029-0667795</p>
+        <p class="warn">⚠️ 請於報名後五天內完成轉帳，以保留名額，感謝您的配合！</p>
+      </div>
+      <div class="notice-card">
+        <span class="notice-title">⚠️ 更動或取消課程</span>
+        報名後如需<b>更動或取消課程</b>，請於該堂課<b>開始兩週前</b>透過<b>官方 LINE</b> 告知我們，以便安排上課人數，感謝您的配合！
+      </div>
+      <div class="line-card">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&amp;data=https%3A%2F%2Flin.ee%2FvPda2yX" alt="澎湖縣皇家樂活健康運動協會官方 LINE QR code">
+        <p>轉帳完成後，歡迎加入官方 LINE 告知我們</p>
+        <a class="btn-line" href="https://lin.ee/vPda2yX" target="_blank" rel="noopener">加入官方 LINE</a>
+      </div>
+      <button type="button" class="btn-again" id="btn-again">再報名一筆</button>
+    </div>
+
+    <!-- 報名截止 -->
+    <div class="card" id="closed-view">
+      <div class="big">🙏</div>
+      <h2>報名已截止</h2>
+      <div id="closed-notice">感謝大家熱情報名，本期課程報名已截止！
+如有新班或空位將另行公告，請留意澎湖縣皇家樂活健康運動協會官方 LINE。</div>
+      <div class="line-card">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&amp;data=https%3A%2F%2Flin.ee%2FvPda2yX" alt="澎湖縣皇家樂活健康運動協會官方 LINE QR code">
+        <p></p>
+        <a class="btn-line" href="https://lin.ee/vPda2yX" target="_blank" rel="noopener">加入官方 LINE</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 常見問題專區（補課 / 更換日期） -->
+  <details class="block-collapse" id="faq-block">
+    <summary>常見問題<span class="toggle-hint">（點我展開）</span></summary>
+    <div class="collapse-body">
+      <div class="stage-card">
+        <p class="faq-q">Q：如果臨時有事不能上課，可以補課或更換日期嗎？</p>
+
+        <div class="faq-plan">
+          <h4>🟢 24堂完整班</h4>
+          <ul class="faq-check">
+            <li>每期享有 <b>2 堂補課</b>權益</li>
+            <li>補課期限至 <b>2026 年 12 月 31 日</b></li>
+            <li>可至協會當年度開設之相同課程班級補課（需提前預約）</li>
+          </ul>
+        </div>
+
+        <div class="faq-plan blue">
+          <h4>🔵 12堂精選班、6堂體驗班</h4>
+          <p>提供<b>更換上課日期</b>服務；因課程堂數較少，恕不提供補課。</p>
+          <p>若因行程安排無法出席，可於欲更換的課程日期<b>至少 14 天（2 週）前</b>，透過協會官方 LINE 提出申請。經協會確認後，可依課程名額安排至其他相同課程班級上課。</p>
+        </div>
+
+        <div class="faq-plan orange">
+          <h4>🟠 澎澄 5+1 課程</h4>
+          <p><b>固定課程，不提供補課及更換日期。</b></p>
+          <p>因場地使用時段及合作單位課程安排固定，無法另行安排補課或更換日期，敬請見諒。</p>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- 官方 LINE（首頁常駐） -->
+  <div class="block">
+    <h2 class="block-title">有問題？歡迎問我們</h2>
+    <p class="block-sub">課程、費用、報名問題，都可以直接問官方 LINE</p>
+    <div class="line-block">
+      <img class="line-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&amp;data=https%3A%2F%2Flin.ee%2FvPda2yX" alt="澎湖縣皇家樂活健康運動協會官方 LINE QR code">
+      <p class="line-tip">掃描 QR code 或點下方按鈕，加入<br><b>澎湖縣皇家樂活健康運動協會<br>官方 LINE</b></p>
+      <a class="btn-line" href="https://lin.ee/vPda2yX" target="_blank" rel="noopener">加入官方 LINE</a>
+    </div>
+  </div>
+
+  <footer>
+    <p class="org">澎湖縣皇家樂活健康運動協會</p>
+    <p>ROYAL LOHAS・一起運動，一起變健康！</p>
+  </footer>
+</div>
+
+<!-- 浮動 Q&A -->
+<button id="qa-fab" title="常見問題">❓</button>
+<div id="qa-panel">
+  <div class="qa-head">💬 常見問題 Q&amp;A</div>
+  <div id="qa-list"><p style="padding:14px 16px; color:var(--gray)">載入中…</p></div>
+</div>
+
+<script>
+// ====== 一打開連結一律停在最上方（除非網址自己帶了 #signup 這類錨點）======
+(function () {
+  // 關掉瀏覽器「記住上次捲動位置」的行為
+  if ("scrollRestoration" in history) {
+    try { history.scrollRestoration = "manual"; } catch (e) {}
+  }
+
+  function toTop() {
+    if (window.location.hash) return; // 使用者是點「立即報名」之類的連結進來的，就尊重錨點
+    var html = document.documentElement;
+    var prev = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto"; // 避免平滑捲動看起來像「自己滑下去又滑上來」
+    window.scrollTo(0, 0);
+    html.style.scrollBehavior = prev;
+  }
+
+  toTop();
+  document.addEventListener("DOMContentLoaded", toTop);
+  window.addEventListener("load", toTop);
+  // 從上一頁「返回」回來時（瀏覽器快取頁面）也回到最上方
+  window.addEventListener("pageshow", function (ev) { if (ev.persisted) toTop(); });
+})();
+
+// ====== 首頁影片主視覺：載入失敗或「減少動態」時改顯示封面圖 ======
+(function () {
+  var video = document.getElementById("hero-video");
+  var cover = document.getElementById("hv-cover");
+  if (!video || !cover) return;
+
+  function showCover() {
+    video.style.display = "none";
+    cover.style.display = "block";
+    try { video.pause(); } catch (e) {}
+  }
+
+  // 影片（或來源）載入失敗 → 顯示封面圖
+  video.addEventListener("error", showCover);
+  var source = video.querySelector("source");
+  if (source) source.addEventListener("error", showCover);
+  // 有些瀏覽器抓不到檔案時只會停在 poster；補一層保險
+  video.addEventListener("stalled", function () { if (video.networkState === 3) showCover(); });
+
+  // 使用者開啟「減少動態效果」→ 停止播放、顯示封面圖
+  var mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  function applyReducedMotion() { if (mq.matches) showCover(); }
+  applyReducedMotion();
+  if (mq.addEventListener) mq.addEventListener("change", applyReducedMotion);
+  else if (mq.addListener) mq.addListener(applyReducedMotion);
+
+  // 儘量觸發自動播放（部分手機需要）；被擋下也沒關係，poster/封面會顯示
+  var p = video.play && video.play();
+  if (p && typeof p.catch === "function") p.catch(function () {});
+})();
+
+// ====== 後端設定（部署 Apps Script 之後，把 /exec 網址貼進來）======
+var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwmA0X0XzFIYcljmuXRDfz9dYPRUMnW7W71H_Sl2k4OCbF0FgvWxj3Br8EkOAfPH_Sw/exec";
+
+// 價目表（顯示用；實際入帳金額以後端為準）
+var PRICES = {
+  "24堂完整班":        { "全民運動補助方案": 3600, "會員優惠價": 3400, orig: "原價 $6,000" },
+  "12堂精選班":        { "全民運動補助方案": 2000, "會員優惠價": 1900, orig: "原價 $3,000" },
+  "6堂體驗班":         { "全民運動補助方案": 1100, "會員優惠價": 1050, orig: "原價 $1,500" },
+  "澎澄運動班（5堂+1）": { "全民運動補助方案": 1500, "會員優惠價": 1400, orig: "單堂體驗價 $450" },
+  "單堂課程體驗":      { "全民運動補助方案": 250,  "會員優惠價": 250,  orig: "" }
+};
+
+// 已額滿的方案（仍顯示於清單，但不可選）
+var SOLD_OUT = ["24堂完整班", "澎澄運動班（5堂+1）"];
+
+// ====== 課程表（同時給「課程表」區塊和報名時選課用）======
+// 皇家多元活動中心主課表：[日期, 週, 時間, 課程, 地點]
+var SCHEDULE_MAIN = [
+  ["8/02","週日","14:30–16:00","核心伸展入門訓練","皇家多元活動中心"],
+  ["8/05","週三","19:30–21:00","肌力與平衡力提升訓練","皇家多元活動中心"],
+  ["8/12","週三","19:30–21:00","全身協調體能訓練","皇家多元活動中心"],
+  ["8/19","週三","19:30–21:00","全身有氧樂活舒鬆運動","皇家多元活動中心"],
+  ["8/23","週日","14:30–16:00","樂活肌力循環訓練","皇家多元活動中心"],
+  ["8/26","週三","19:30–21:00","核心肌群重量訓練","皇家多元活動中心"],
+  ["8/30","週日","14:30–16:00","功能性肌力訓練","皇家多元活動中心"],
+  ["9/02","週三","19:30–21:00","核心有氧進階挑戰","皇家多元活動中心"],
+  ["9/06","週日","14:30–16:00","增肌燃脂有氧訓練","皇家多元活動中心"],
+  ["9/09","週三","19:30–21:00","敏捷反應與協調訓練","皇家多元活動中心"],
+  ["9/13","週日","14:30–16:00","上肢肌力與姿勢改善","皇家多元活動中心"],
+  ["9/16","週三","19:30–21:00","肌力強化有氧訓練","皇家多元活動中心"],
+  ["9/23","週三","19:30–21:00","全身肌耐力循環運動","皇家多元活動中心"],
+  ["9/27","週日","14:30–16:00","下肢肌力與姿勢改善","皇家多元活動中心"],
+  ["9/30","週三","19:30–21:00","下肢力量與行動力提升","皇家多元活動中心"],
+  ["10/04","週日","14:30–16:00","輕重量肌力訓練","皇家多元活動中心"],
+  ["10/07","週三","19:30–21:00","健康體態伸展運動","皇家多元活動中心"],
+  ["10/11","週日","14:30–16:00","全身活力循環訓練","皇家多元活動中心"],
+  ["10/14","週三","19:30–21:00","健康啟動全身肌力活化","皇家多元活動中心"],
+  ["10/18","週日","14:30–16:00","平衡肌力綜合訓練","皇家多元活動中心"],
+  ["10/21","週三","19:30–21:00","協力合作運動挑戰","皇家多元活動中心"],
+  ["10/28","週三","19:30–21:00","核心椅起肌力訓練","皇家多元活動中心"],
+  ["11/01","週日","14:30–16:00","重量肌力強化訓練","皇家多元活動中心"],
+  ["11/04","週三","19:30–21:00","健康體態伸展 + 有氧運動","皇家多元活動中心"]
+];
+
+// 澎澄運動班（5堂+1）：[日期, 週, 時間, 課程, 教練]
+var SCHEDULE_PC = [
+  ["8/16","週日","14:30–16:00","核心穩定肌力訓練","林哲玄教練"],
+  ["9/20","週日","14:30–16:00","TABATA平衡有氧","李奕墩教練"],
+  ["10/25","週日","14:30–16:00","多元體適能綜合訓練","林國智教練"],
+  ["11/15","週日","14:30–16:00","彈力帶器械模擬訓練","邱進榮教練"],
+  ["12/13","週日","14:30–16:00","繩梯敏捷核心協調訓練","邱進榮教練"]
+];
+
+// 每個方案要從哪一份課表挑課、要挑幾堂
+// source：main = 皇家多元活動中心課表；pc = 澎澄運動班課表（兩份分開，不會混在一起）
+// pick：數字 = 要自己挑幾堂；"all" = 方案已含整份課表，不用挑
+var PLAN_COURSES = {
+  "24堂完整班":        { source: "main", pick: "all" },
+  "12堂精選班":        { source: "main", pick: 12 },
+  "6堂體驗班":         { source: "main", pick: 6 },
+  "澎澄運動班（5堂+1）": { source: "pc",   pick: "all" },
+  "單堂課程體驗":      { source: "main", pick: 1 }
+};
+
+function $(id) { return document.getElementById(id); }
+
+function currentIdentity() {
+  var r = document.querySelector('input[name="identity"]:checked');
+  return r ? r.value : "全民運動補助方案";
+}
+function currentPlan() {
+  var r = document.querySelector('input[name="plan"]:checked');
+  return r ? r.value : "";
+}
+
+// 依身分別重繪方案清單（保留已選的方案）
+function renderPlans() {
+  var identity = currentIdentity();
+  var selected = currentPlan();
+  var html = "";
+  Object.keys(PRICES).forEach(function (plan) {
+    var p = PRICES[plan];
+    var isSold = SOLD_OUT.indexOf(plan) !== -1;
+    html += '<label class="plan-item' + (isSold ? ' sold-out' : '') + '">' +
+      '<input type="radio" name="plan" value="' + plan + '"' + (isSold ? ' disabled' : '') + (plan === selected && !isSold ? " checked" : "") + '>' +
+      '<div class="plan-box"><span class="plan-name">' + plan +
+      (isSold ? '<span class="sold-badge">已額滿</span>' : '') +
+      (p.orig ? '<span class="plan-orig">' + p.orig + '</span>' : "") +
+      '</span><span class="plan-price">' + (isSold ? '—' : p[identity].toLocaleString() + '元') + '</span></div></label>';
+  });
+  $("plan-list").innerHTML = html;
+  var inputs = document.querySelectorAll('input[name="plan"]');
+  for (var i = 0; i < inputs.length; i++) inputs[i].addEventListener("change", onPlanChange);
+
+  // 依身分別顯示提示標題，並讓價格跳一下（讓「浮起來／消掉」看得清楚）
+  var hint = $("plan-hint");
+  if (identity === "會員優惠價") {
+    hint.className = "plan-hint member";
+    hint.textContent = "👑 目前顯示【會員優惠價】";
+  } else {
+    hint.className = "plan-hint";
+    hint.textContent = "🏷️ 目前顯示【全民運動補助方案】";
+  }
+  var prices = document.querySelectorAll('.plan-price');
+  for (var j = 0; j < prices.length; j++) {
+    prices[j].classList.remove("flash");
+    void prices[j].offsetWidth; // 重新觸發動畫
+    prices[j].classList.add("flash");
+  }
+  updateAmount();
+  renderCourses();
+}
+
+// 換方案：金額要重算，能選的課程清單也要跟著換（不同方案的課表是分開的）
+function onPlanChange() {
+  updateAmount();
+  renderCourses();
+}
+
+function updateAmount() {
+  var plan = currentPlan();
+  if (!plan) { $("amount-display").textContent = "請先選擇方案"; return; }
+  $("amount-display").textContent = "NT$ " + PRICES[plan][currentIdentity()].toLocaleString();
+}
+
+// ====== 選擇上課日期 ======
+var coursePlan = "";          // 目前清單是為了哪個方案畫的
+var courseSelected = [];      // 目前勾選的日期（例：["8/02","8/23"]）
+
+function courseRowsOf(plan) {
+  var rule = PLAN_COURSES[plan];
+  if (!rule) return [];
+  return rule.source === "pc" ? SCHEDULE_PC : SCHEDULE_MAIN;
+}
+
+function renderCourses() {
+  var field = $("course-field");
+  var list = $("course-list");
+  var hint = $("course-hint");
+  var plan = currentPlan();
+  var rule = PLAN_COURSES[plan];
+
+  if (!rule) { field.style.display = "none"; coursePlan = ""; courseSelected = []; return; }
+  field.style.display = "";
+
+  var rows = courseRowsOf(plan);
+  var fixed = rule.pick === "all";
+  var isPC = rule.source === "pc";
+
+  // 換了方案就把先前的勾選清掉（兩份課表不共用）
+  if (plan !== coursePlan) {
+    coursePlan = plan;
+    courseSelected = fixed ? rows.map(function (r) { return r[0]; }) : [];
+  }
+  if (fixed) courseSelected = rows.map(function (r) { return r[0]; });
+
+  var full = !fixed && courseSelected.length >= rule.pick;
+
+  var html = "";
+  rows.forEach(function (r) {
+    var date = r[0];
+    var checked = courseSelected.indexOf(date) !== -1;
+    var disabled = fixed || (full && !checked);
+    html += '<label class="course-item">' +
+      '<input type="checkbox" name="course" value="' + date + '"' +
+      (checked ? " checked" : "") + (disabled ? " disabled" : "") + '>' +
+      '<div class="course-box">' +
+        '<span class="course-check">✔</span>' +
+        '<span class="course-date">' + date + '<span class="course-wk">' + r[1] + '</span></span>' +
+        '<span class="course-main">' +
+          '<span class="course-name">' + r[3] + '</span>' +
+          '<span class="course-time">' + r[2] + '</span>' +
+        '</span>' +
+      '</div></label>';
+  });
+  list.innerHTML = html;
+  list.className = "course-list" + (fixed ? " fixed" : "") + (isPC ? " pc" : "");
+
+  if (!fixed) {
+    var boxes = list.querySelectorAll('input[name="course"]');
+    for (var i = 0; i < boxes.length; i++) boxes[i].addEventListener("change", onCourseToggle);
+  }
+
+  updateCourseHint();
+}
+
+// 勾選／取消時只更新狀態，不整份重畫（重畫會讓清單捲軸跳回最上面）
+function onCourseToggle(ev) {
+  var date = ev.target.value;
+  courseSelected = courseSelected.filter(function (d) { return d !== date; });
+  if (ev.target.checked) courseSelected.push(date);
+  updateCourseHint();
+}
+
+function updateCourseHint() {
+  var plan = currentPlan();
+  var rule = PLAN_COURSES[plan];
+  if (!rule) return;
+
+  var hint = $("course-hint");
+  var rows = courseRowsOf(plan);
+
+  if (rule.pick === "all") {
+    hint.className = "course-hint" + (rule.source === "pc" ? " pc" : "");
+    hint.textContent = (rule.source === "pc" ? "🏅 澎澄運動班" : "📘 此方案") +
+      "已包含以下 " + rows.length + " 堂課，不需另外挑選";
+    return;
+  }
+
+  var full = courseSelected.length >= rule.pick;
+
+  // 選滿了就把還沒勾的鎖起來，避免超選
+  var boxes = $("course-list").querySelectorAll('input[name="course"]');
+  for (var i = 0; i < boxes.length; i++) boxes[i].disabled = full && !boxes[i].checked;
+
+  if (full) {
+    hint.className = "course-hint full";
+    hint.textContent = "✅ 已選滿 " + rule.pick + " 堂！要換別堂請先取消已選的日期";
+  } else {
+    hint.className = "course-hint";
+    hint.textContent = "🗓️ 請選 " + rule.pick + " 堂（已選 " + courseSelected.length + " / " + rule.pick + " 堂）";
+  }
+}
+
+// 依課表順序整理已選日期（送出、回顯都用這份）
+function selectedCoursesInOrder() {
+  var rows = courseRowsOf(currentPlan());
+  return rows
+    .map(function (r) { return r[0]; })
+    .filter(function (d) { return courseSelected.indexOf(d) !== -1; });
+}
+
+var identityInputs = document.querySelectorAll('input[name="identity"]');
+for (var i = 0; i < identityInputs.length; i++) identityInputs[i].addEventListener("change", renderPlans);
+renderPlans();
+
+// ====== 課程表區塊（資料在最上方的 SCHEDULE_MAIN / SCHEDULE_PC）======
+function renderSchedule(id, rows, highlightPC) {
+  var el = $(id);
+  if (!el) return;
+  var html = "";
+  rows.forEach(function (r) {
+    var isPC = highlightPC && r[4] === "澎澄極限運動教室";
+    html += '<tr' + (isPC ? ' class="pc"' : '') + '>' +
+      '<td class="d">' + r[0] + '<span class="wk">' + r[1] + '</span></td>' +
+      '<td class="t">' + r[2] + '</td>' +
+      '<td class="c">' + r[3] + '</td>' +
+      '<td class="v">' + r[4] + '</td></tr>';
+  });
+  el.innerHTML = html;
+}
+renderSchedule("sched-main", SCHEDULE_MAIN, true);
+renderSchedule("sched-pc", SCHEDULE_PC, false);
+
+// ====== JSONP 小工具 ======
+var jsonpCounter = 0;
+function jsonp(params, onSuccess, onError) {
+  if (!GOOGLE_SCRIPT_URL) { onError("後端尚未設定完成，請稍後再試"); return; }
+  var cbName = "cb_" + (++jsonpCounter) + "_" + new Date().getTime();
+  var timer = setTimeout(function () { cleanup(); onError("連線逾時，請再試一次"); }, 30000);
+  function cleanup() {
+    clearTimeout(timer);
+    delete window[cbName];
+    if (script.parentNode) script.parentNode.removeChild(script);
+  }
+  window[cbName] = function (data) { cleanup(); onSuccess(data); };
+  var qs = "callback=" + cbName;
+  Object.keys(params).forEach(function (k) {
+    qs += "&" + k + "=" + encodeURIComponent(params[k]);
+  });
+  var script = document.createElement("script");
+  script.src = GOOGLE_SCRIPT_URL + "?" + qs;
+  script.onerror = function () { cleanup(); onError("連線失敗，請檢查網路後再試一次"); };
+  document.body.appendChild(script);
+}
+
+// ====== 讀取報名狀態 ======
+function applyStatus(activity) {
+  var open = String(activity.registrationStatus || "").trim() === "開放";
+  var badge = $("status-badge");
+  if (open) {
+    badge.textContent = "🟢 開放報名中";
+    badge.classList.remove("closed");
+    $("form-view").style.display = "";
+    $("closed-view").style.display = "none";
+  } else {
+    badge.textContent = "🔴 報名已截止";
+    badge.classList.add("closed");
+    $("form-view").style.display = "none";
+    $("success-view").style.display = "none";
+    $("closed-view").style.display = "block";
+    if (activity.closedNotice) $("closed-notice").textContent = activity.closedNotice;
+  }
+}
+
+if (GOOGLE_SCRIPT_URL) {
+  jsonp({ action: "status" }, function (data) {
+    if (data && data.status === "success" && data.activity) applyStatus(data.activity);
+  }, function () { /* 讀不到狀態就先照預設顯示 */ });
+}
+
+// ====== 送出報名 ======
+$("signup-form").addEventListener("submit", function (ev) {
+  ev.preventDefault();
+  var msg = $("form-msg");
+  msg.textContent = "";
+
+  var name = $("f-name").value.trim();
+  var phone = $("f-phone").value.trim();
+  var plan = currentPlan();
+
+  if (!name) { msg.textContent = "請填寫姓名"; $("f-name").focus(); return; }
+  if (!phone || phone.replace(/\D/g, "").length < 8) { msg.textContent = "請填寫正確的聯絡電話"; $("f-phone").focus(); return; }
+  if (!plan) { msg.textContent = "請選擇報名方案"; return; }
+
+  var rule = PLAN_COURSES[plan];
+  var courses = selectedCoursesInOrder();
+  if (rule && rule.pick !== "all" && courses.length !== rule.pick) {
+    msg.textContent = "請選滿 " + rule.pick + " 堂上課日期（目前選了 " + courses.length + " 堂）";
+    $("course-field").scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
+  var btn = $("btn-submit");
+  btn.disabled = true;
+  btn.textContent = "送出中…";
+
+  jsonp({
+    action: "submit",
+    name: name,
+    phone: phone,
+    identity: currentIdentity(),
+    plan: plan,
+    courses: courses.join(","),
+    note: $("f-note").value.trim()
+  }, function (data) {
+    btn.disabled = false;
+    btn.textContent = "送出報名";
+    if (data.status === "success") {
+      showSuccess(name, phone, plan, courses, data.price, data.duplicate);
+    } else if (data.status === "closed") {
+      applyStatus({ registrationStatus: "已截止" });
+    } else {
+      msg.textContent = data.message || "送出失敗，請再試一次";
+    }
+  }, function (errText) {
+    btn.disabled = false;
+    btn.textContent = "送出報名";
+    msg.textContent = errText;
+  });
+});
+
+function showSuccess(name, phone, plan, courses, price, duplicate) {
+  var rows = [
+    ["姓名", name],
+    ["聯絡電話", phone],
+    ["身分別", currentIdentity()],
+    ["報名方案", plan],
+    ["上課日期", courses.length ? "共 " + courses.length + " 堂<br>" + courses.join("、") : "—"],
+    ["應繳金額", "NT$ " + Number(price).toLocaleString()]
+  ];
+  var html = "";
+  rows.forEach(function (r) {
+    html += '<div><span class="k">' + r[0] + '</span><span class="v">' + r[1] + "</span></div>";
+  });
+  $("recap").innerHTML = html;
+  $("dup-note").style.display = duplicate ? "block" : "none";
+  $("form-view").style.display = "none";
+  $("success-view").style.display = "block";
+  $("success-view").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+$("btn-again").addEventListener("click", function () {
+  $("signup-form").reset();
+  coursePlan = "";        // 清掉上一筆選的課程，重新挑
+  courseSelected = [];
+  renderPlans();
+  $("success-view").style.display = "none";
+  $("form-view").style.display = "";
+  $("form-view").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+// ====== 浮動 Q&A ======
+var faqLoaded = false;
+$("qa-fab").addEventListener("click", function () {
+  var panel = $("qa-panel");
+  var opening = panel.style.display !== "block";
+  panel.style.display = opening ? "block" : "none";
+  if (opening && !faqLoaded) loadFaq();
+});
+
+var DEFAULT_FAQ = [
+  { q: "上課時間是什麼時候？", a: "每週三晚上 19:30–21:00、每週日下午 14:30–16:00，報名時可以選擇您方便的時段喔！" },
+  { q: "沒有運動經驗可以參加嗎？", a: "當然可以！課程由專業教練帶領，會依每個人的體能狀況調整強度，新手和長輩都能安心參加。" },
+  { q: "費用怎麼繳？", a: "報名成功後，畫面會顯示轉帳資訊（郵局代號、戶名、帳號），依指示轉帳即可，我們會另行確認收款。" },
+  { q: "可以先體驗一堂再決定嗎？", a: "可以！單堂課程體驗價只要 $250，歡迎先來體驗看看再報名完整課程。" },
+  { q: "報名後可以更動或取消課程嗎？", a: "可以，請於該堂課開始兩週前透過官方 LINE 告知我們，以便我們安排上課人數。" },
+  { q: "臨時不能上課，可以補課或更換日期嗎？", a: "依方案不同：24堂完整班每期享 2 堂補課（期限至 2026/12/31，需提前預約）；12堂精選班、6堂體驗班不補課，但可更換上課日期（須於欲更換日期至少 14 天前透過官方 LINE 申請）；澎澄 5+1 為固定課程，不提供補課及更換日期。詳情請見首頁「常見問題」專區。" }
+];
+
+function renderFaq(items) {
+  var html = "";
+  items.forEach(function (it) {
+    html += '<details class="qa-item"><summary>' + it.q + "</summary><p>" + it.a + "</p></details>";
+  });
+  $("qa-list").innerHTML = html || '<p style="padding:14px 16px;">目前沒有常見問題。</p>';
+}
+
+function loadFaq() {
+  if (!GOOGLE_SCRIPT_URL) { renderFaq(DEFAULT_FAQ); faqLoaded = true; return; }
+  jsonp({ action: "faq" }, function (data) {
+    faqLoaded = true;
+    renderFaq(data && data.items && data.items.length ? data.items : DEFAULT_FAQ);
+  }, function () { renderFaq(DEFAULT_FAQ); });
+}
+</script>
+</body>
+</html>
