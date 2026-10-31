@@ -28,6 +28,11 @@ const DEFAULT_FAQ = [
   ["還有其他問題怎麼辦？", "歡迎加入澎湖縣皇家樂活健康運動協會官方 LINE 詢問，我們會盡快回覆您！"]
 ];
 
+// 增肌多元頁沒有澎澄班，Q&A 預設內容拿掉澎澄那一句
+const DEFAULT_FAQ_MUSCLE = DEFAULT_FAQ.map(function (row) {
+  return [row[0], row[1].replace("；澎澄 5+1 為固定課程，不提供補課及更換日期。", "。")];
+});
+
 const REGISTRATION_HEADERS = [
   "時間",
   "姓名",
@@ -44,9 +49,6 @@ const REGISTRATION_HEADERS = [
 
 const PAYMENT_STATUS_OPTIONS = ["已繳費", "未繳費"];
 
-// 價目表：金額一律以後端這份為準（前台只是顯示用，避免被改參數亂填金額）
-const IDENTITIES = ["全民運動補助方案", "會員優惠價"];
-
 // 舊名稱相容：前後台更新的空窗期若送來舊值，自動對應成新名稱
 const IDENTITY_ALIAS = {
   "一般學員": "全民運動補助方案",
@@ -54,13 +56,46 @@ const IDENTITY_ALIAS = {
   "協會會員": "會員優惠價"
 };
 
+// 價目表：金額一律以後端這份為準（前台只是顯示用，避免被改參數亂填金額）
 const PRICES = {
-  "24堂完整班": { "全民運動補助方案": 3600, "會員優惠價": 3400, original: "原價 $6,000" },
-  "12堂精選班": { "全民運動補助方案": 2000, "會員優惠價": 1900, original: "原價 $3,000" },
-  "6堂體驗班": { "全民運動補助方案": 1100, "會員優惠價": 1050, original: "原價 $1,500" },
+  "24堂完整班": { "全民運動補助方案": 3600, "增肌多元運動優惠方案": 3600, "會員優惠價": 3400, original: "原價 $6,000" },
+  "12堂精選班": { "全民運動補助方案": 2000, "增肌多元運動優惠方案": 2000, "會員優惠價": 1900, original: "原價 $3,000" },
+  "6堂體驗班": { "全民運動補助方案": 1100, "增肌多元運動優惠方案": 1100, "會員優惠價": 1050, original: "原價 $1,500" },
   "澎澄運動班（5堂+1）": { "全民運動補助方案": 1500, "會員優惠價": 1400, original: "單堂原價 $380" },
-  "單堂課程體驗": { "全民運動補助方案": 250, "會員優惠價": 250, original: "" }
+  "單堂課程體驗": { "全民運動補助方案": 250, "增肌多元運動優惠方案": 250, "會員優惠價": 250, original: "" }
 };
+
+// 同一支後端、同一張試算表，服務兩個報名頁（前台送來的 page 參數決定是哪一頁）：
+//   main   = 原報名頁（不帶 page 參數）→ 原本的分頁，行為跟以前完全一樣
+//   muscle = 增肌多元運動優惠方案頁（page=muscle）→ 自己的報名資料／Q&A 分頁、自己的報名狀態
+const PAGES = {
+  main: {
+    id: "main",
+    label: "原報名頁",
+    registrations: SHEETS.registrations,
+    faq: SHEETS.faq,
+    defaultFaq: DEFAULT_FAQ,
+    statusKey: "報名狀態",
+    identities: ["全民運動補助方案", "會員優惠價"],
+    plans: ["24堂完整班", "12堂精選班", "6堂體驗班", "澎澄運動班（5堂+1）", "單堂課程體驗"]
+  },
+  muscle: {
+    id: "muscle",
+    label: "增肌多元報名頁",
+    registrations: "報名資料（增肌多元）",
+    faq: "Q&A（增肌多元）",
+    defaultFaq: DEFAULT_FAQ_MUSCLE,
+    statusKey: "報名狀態（增肌多元頁）",
+    identities: ["增肌多元運動優惠方案", "會員優惠價"],
+    plans: ["24堂完整班", "12堂精選班", "6堂體驗班", "單堂課程體驗"]
+  }
+};
+
+// 沒帶或帶了不認得的 page，一律當成原報名頁
+function getPage_(params) {
+  const key = String((params && params.page) || "").trim();
+  return Object.prototype.hasOwnProperty.call(PAGES, key) ? PAGES[key] : PAGES.main;
+}
 
 // 每個方案要選幾堂課（前台 index.html 的 PLAN_COURSES 也是同一套規則）
 // 「24堂完整班」「澎澄運動班」是整份課表都包含，前台會自動帶入全部日期
@@ -78,17 +113,19 @@ function doGet(e) {
   const action = params.action || "status";
   const callback = sanitizeCallback_(params.callback);
 
+  const page = getPage_(params);
+
   let result;
 
   try {
     setupSheets_();
 
     if (action === "submit") {
-      result = submitRegistration_(params);
+      result = submitRegistration_(params, page);
     } else if (action === "faq") {
-      result = getFaq_();
+      result = getFaq_(page);
     } else {
-      result = getStatus_();
+      result = getStatus_(page);
     }
   } catch (error) {
     result = {
@@ -145,8 +182,8 @@ function rebuildRegistrationSheet() {
 }
 
 // Q&A 分頁「問題」「回答」任何時候編輯，前台的 Q&A 小工具都會自動抓最新內容（不用重新部署）
-function getFaq_() {
-  const sheet = getSs_().getSheetByName(SHEETS.faq);
+function getFaq_(page) {
+  const sheet = getSs_().getSheetByName((page || PAGES.main).faq);
   const values = sheet.getDataRange().getValues().slice(1);
 
   const items = values
@@ -174,28 +211,48 @@ function setupSheets_() {
     settings.getRange(1, 1, DEFAULT_SETTINGS.length, 3).setValues(DEFAULT_SETTINGS);
     settings.autoResizeColumns(1, 3);
   }
+  ensurePageStatusRows_(settings);
 
-  let reg = ss.getSheetByName(SHEETS.registrations);
-  if (!reg) {
-    reg = ss.insertSheet(SHEETS.registrations);
-    reg.getRange(1, 1, 1, REGISTRATION_HEADERS.length).setValues([REGISTRATION_HEADERS]);
-    reg.setFrozenRows(1);
-    reg.getRange(1, 1, 1, REGISTRATION_HEADERS.length).setFontWeight("bold").setBackground("#1F7A70").setFontColor("#ffffff");
-    reg.autoResizeColumns(1, REGISTRATION_HEADERS.length);
-    applyPaymentStatusFormatting_(reg, REGISTRATION_HEADERS.indexOf("繳費情況") + 1);
-  }
+  Object.keys(PAGES).forEach(function (key) {
+    const page = PAGES[key];
 
-  let faq = ss.getSheetByName(SHEETS.faq);
-  if (!faq) {
-    faq = ss.insertSheet(SHEETS.faq);
-    faq.getRange(1, 1, 1, FAQ_HEADERS.length).setValues([FAQ_HEADERS]);
-    faq.getRange(2, 1, DEFAULT_FAQ.length, FAQ_HEADERS.length).setValues(DEFAULT_FAQ);
-    faq.setFrozenRows(1);
-    faq.getRange(1, 1, 1, FAQ_HEADERS.length).setFontWeight("bold").setBackground("#1F7A70").setFontColor("#ffffff");
-    faq.setColumnWidth(1, 260);
-    faq.setColumnWidth(2, 420);
-    faq.getRange(2, 1, DEFAULT_FAQ.length, FAQ_HEADERS.length).setWrap(true);
-  }
+    let reg = ss.getSheetByName(page.registrations);
+    if (!reg) {
+      reg = ss.insertSheet(page.registrations);
+      reg.getRange(1, 1, 1, REGISTRATION_HEADERS.length).setValues([REGISTRATION_HEADERS]);
+      reg.setFrozenRows(1);
+      reg.getRange(1, 1, 1, REGISTRATION_HEADERS.length).setFontWeight("bold").setBackground("#1F7A70").setFontColor("#ffffff");
+      reg.autoResizeColumns(1, REGISTRATION_HEADERS.length);
+      applyPaymentStatusFormatting_(reg, REGISTRATION_HEADERS.indexOf("繳費情況") + 1);
+    }
+
+    let faq = ss.getSheetByName(page.faq);
+    if (!faq) {
+      const rows = page.defaultFaq;
+      faq = ss.insertSheet(page.faq);
+      faq.getRange(1, 1, 1, FAQ_HEADERS.length).setValues([FAQ_HEADERS]);
+      faq.getRange(2, 1, rows.length, FAQ_HEADERS.length).setValues(rows);
+      faq.setFrozenRows(1);
+      faq.getRange(1, 1, 1, FAQ_HEADERS.length).setFontWeight("bold").setBackground("#1F7A70").setFontColor("#ffffff");
+      faq.setColumnWidth(1, 260);
+      faq.setColumnWidth(2, 420);
+      faq.getRange(2, 1, rows.length, FAQ_HEADERS.length).setWrap(true);
+    }
+  });
+}
+
+// 「活動設定」分頁裡，每個報名頁都有自己的一列報名狀態（原頁用「報名狀態」那列）。
+// 新頁的那列不存在就自動補上，初始值抄原頁現在的狀態；之後兩頁可以各自開關。
+function ensurePageStatusRows_(settings) {
+  const keys = settings.getRange(1, 1, Math.max(settings.getLastRow(), 1), 2).getValues();
+  const map = {};
+  keys.forEach(function (row) { if (row[0]) map[row[0]] = row[1]; });
+
+  Object.keys(PAGES).forEach(function (key) {
+    const page = PAGES[key];
+    if (Object.prototype.hasOwnProperty.call(map, page.statusKey)) return;
+    settings.appendRow([page.statusKey, map["報名狀態"] || "開放", page.label + "的報名狀態：填「開放」才可以送出；其他文字只會關閉這一頁的報名"]);
+  });
 }
 
 // 「繳費情況」下拉選單 + 未繳費整列自動變粉紅色
@@ -232,7 +289,7 @@ function columnToLetter_(column) {
   return letter;
 }
 
-function getSettings_() {
+function getSettings_(page) {
   const sheet = getSs_().getSheetByName(SHEETS.settings);
   const values = sheet.getDataRange().getValues();
   const map = {};
@@ -241,25 +298,32 @@ function getSettings_() {
     if (row[0]) map[row[0]] = row[1];
   });
 
+  // 這一頁自己的報名狀態那列被刪掉時，退回看原頁的「報名狀態」
+  const statusKey = (page || PAGES.main).statusKey;
+  const status = Object.prototype.hasOwnProperty.call(map, statusKey) ? map[statusKey] : map["報名狀態"];
+
   return {
     activityName: map["活動名稱"] || "",
     classTime: map["上課時間"] || "",
-    registrationStatus: map["報名狀態"] || "",
+    registrationStatus: status || "",
     closedNotice: map["截止公告"] || ""
   };
 }
 
-function getStatus_() {
-  const settings = getSettings_();
+// 回傳 page：增肌多元頁看到自己的代號，才知道後端已經是會分頁的版本，才會開放送出
+function getStatus_(page) {
+  const settings = getSettings_(page);
 
   return {
     status: "success",
+    page: (page || PAGES.main).id,
     activity: settings
   };
 }
 
-function submitRegistration_(params) {
-  const settings = getSettings_();
+function submitRegistration_(params, page) {
+  page = page || PAGES.main;
+  const settings = getSettings_(page);
 
   if (String(settings.registrationStatus || "").trim() !== "開放") {
     return {
@@ -291,11 +355,11 @@ function submitRegistration_(params) {
     }
   }
 
-  if (IDENTITIES.indexOf(identity) === -1) {
+  if (page.identities.indexOf(identity) === -1) {
     return { status: "error", message: "身分別選項不正確" };
   }
 
-  if (!PRICES[plan]) {
+  if (!PRICES[plan] || page.plans.indexOf(plan) === -1) {
     return { status: "error", message: "報名方案選項不正確" };
   }
 
@@ -306,7 +370,7 @@ function submitRegistration_(params) {
 
   const price = PRICES[plan][identity];
 
-  const sheet = getSs_().getSheetByName(SHEETS.registrations);
+  const sheet = getSs_().getSheetByName(page.registrations);
   const headers = ensureRegistrationColumns_(sheet); // 欄位缺了會自動補，資料才不會被丟掉
 
   // 同姓名 + 同電話 + 同方案 視為重複報名（仍會記錄，前台會提醒）
