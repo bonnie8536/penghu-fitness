@@ -28,10 +28,20 @@ const DEFAULT_FAQ = [
   ["還有其他問題怎麼辦？", "歡迎加入澎湖縣皇家樂活健康運動協會官方 LINE 詢問，我們會盡快回覆您！"]
 ];
 
-// 增肌多元頁沒有澎澄班，Q&A 預設內容拿掉澎澄那一句
-const DEFAULT_FAQ_MUSCLE = DEFAULT_FAQ.map(function (row) {
-  return [row[0], row[1].replace("；澎澄 5+1 為固定課程，不提供補課及更換日期。", "。")];
-});
+// 增肌多元頁只賣「24堂完整班」單一價：Q&A 預設內容拿掉單堂體驗、會員價，補課只講 24 堂
+const DEFAULT_FAQ_MUSCLE = DEFAULT_FAQ
+  .filter(function (row) {
+    return row[0] !== "可以先體驗一堂再決定嗎？" && row[0] !== "協會會員價怎麼認定？";
+  })
+  .map(function (row) {
+    if (row[0] === "上課時間是什麼時候？") {
+      return [row[0], "每週三晚上 19:30–21:00、每週日下午 14:30–16:00，實際日期請見首頁「課程表」。"];
+    }
+    if (row[0] === "臨時不能上課，可以補課或更換日期嗎？") {
+      return ["臨時不能上課，可以補課嗎？", "可以。24堂完整班每期享 2 堂補課（期限至 2027/6/30，需提前預約），可至協會當年度開設之相同課程班級補課。"];
+    }
+    return row;
+  });
 
 const REGISTRATION_HEADERS = [
   "時間",
@@ -87,9 +97,10 @@ const PAGES = {
     defaultFaq: DEFAULT_FAQ_MUSCLE,
     statusKey: "報名狀態（增肌多元頁）",
     identities: ["增肌多元運動優惠方案", "會員優惠價"],
-    // 24堂完整班已額滿：從可報名清單拿掉，後端直接擋（前台 index.html 的 SOLD_OUT 也同步）
-    // 要重新開放時，把 "24堂完整班" 加回這個陣列最前面，並清空前台的 SOLD_OUT
-    plans: ["12堂精選班", "6堂體驗班", "單堂課程體驗"]
+    // 這一頁只開放「24堂完整班」，不分身分一律 1,450 元（不看上面共用的 PRICES）
+    // ⚠️ 改這裡的方案或價格，前台 index.html 的 PRICES 也要一起改；兩邊對不上前台會自動暫停報名
+    plans: ["24堂完整班"],
+    prices: { "24堂完整班": 1450 }
   }
 };
 
@@ -319,6 +330,7 @@ function getStatus_(page) {
   return {
     status: "success",
     page: (page || PAGES.main).id,
+    prices: (page || PAGES.main).prices || null, // 有自訂價格的頁面回報價格，前台用來核對
     activity: settings
   };
 }
@@ -370,7 +382,7 @@ function submitRegistration_(params, page) {
     return { status: "error", message: courseResult.error };
   }
 
-  const price = PRICES[plan][identity];
+  const price = page.prices ? page.prices[plan] : PRICES[plan][identity];
 
   const sheet = getSs_().getSheetByName(page.registrations);
   const headers = ensureRegistrationColumns_(sheet); // 欄位缺了會自動補，資料才不會被丟掉

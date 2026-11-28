@@ -159,6 +159,7 @@
     margin: 26px 0 10px;
   }
   @media (max-width: 600px) { .price-cards { grid-template-columns: 1fr; } }
+  .price-cards.single { grid-template-columns: 1fr; }
   .price-card {
     background: var(--white);
     border-radius: var(--radius);
@@ -1126,23 +1127,11 @@
   <!-- 課程費用（緊接在報名表單前） -->
   <div class="block">
     <h2 class="block-title">課程費用</h2>
-    <div class="trial-price">單堂課程體驗價 <b>$250</b></div>
-
-    <div class="price-cards">
+    <div class="price-cards single">
       <div class="price-card general">
         <div class="card-head">增肌多元運動優惠方案</div>
         <ul>
-          <li class="sold"><span>24堂完整班<span class="li-sold">已額滿</span><span class="orig">原價 $6,000</span></span><span class="p">3,600元</span></li>
-          <li><span>12堂精選班<span class="orig">原價 $3,000</span></span><span class="p">2,000元</span></li>
-          <li><span>6堂體驗班<span class="orig">原價 $1,500</span></span><span class="p">1,100元</span></li>
-        </ul>
-      </div>
-      <div class="price-card member">
-        <div class="card-head">👑 會員優惠價<span class="head-sub">協會會員專屬</span></div>
-        <ul>
-          <li class="sold"><span>24堂完整班<span class="li-sold">已額滿</span></span><span class="p">3,400元</span></li>
-          <li><span>12堂精選班</span><span class="p">1,900元</span></li>
-          <li><span>6堂體驗班</span><span class="p">1,050元</span></li>
+          <li><span>24堂完整班<span class="orig">原價 $6,000</span></span><span class="p">1,450元</span></li>
         </ul>
       </div>
     </div>
@@ -1168,22 +1157,12 @@
         </div>
 
         <div class="field">
-          <label class="f-label">身分別 <span class="req">＊</span></label>
-          <div class="pills" id="identity-pills">
-            <label class="pill"><input type="radio" name="identity" value="增肌多元運動優惠方案" checked><span>增肌多元運動優惠方案</span></label>
-            <label class="pill orange"><input type="radio" name="identity" value="會員優惠價"><span>👑 會員優惠價</span></label>
-          </div>
-          <p class="member-only-note">👑「會員優惠價」為<b>協會會員專屬</b>，非會員請選「增肌多元運動優惠方案」</p>
-        </div>
-
-        <div class="field">
           <label class="f-label">報名方案 <span class="req">＊</span></label>
-          <div class="plan-hint" id="plan-hint"></div>
           <div class="plan-list" id="plan-list"></div>
         </div>
 
         <div class="field" id="course-field">
-          <label class="f-label">選擇上課日期 <span class="req">＊</span></label>
+          <label class="f-label">上課日期</label>
           <div class="course-hint" id="course-hint"></div>
           <div class="course-list" id="course-list"></div>
         </div>
@@ -1199,7 +1178,7 @@
           <p class="notice-line">🔁 報名後如需<b>更動或取消課程</b>，請於該堂課<b>開始兩週前</b>透過<b>官方 LINE</b> 告知我們，以便安排上課人數，感謝您的配合！</p>
         </div>
 
-        <div class="amount-bar"><span>應繳金額</span><b id="amount-display">請先選擇方案</b></div>
+        <div class="amount-bar"><span>應繳金額</span><b id="amount-display">NT$ 1,450</b></div>
 
         <button type="submit" class="btn-submit" id="btn-submit">送出報名</button>
         <div class="form-msg" id="form-msg"></div>
@@ -1263,11 +1242,6 @@
           </ul>
         </div>
 
-        <div class="faq-plan blue">
-          <h4>🔵 12堂精選班、6堂體驗班</h4>
-          <p>提供<b>更換上課日期</b>服務；因課程堂數較少，恕不提供補課。</p>
-          <p>若因行程安排無法出席，可於欲更換的課程日期<b>至少 14 天（2 週）前</b>，透過協會官方 LINE 提出申請。經協會確認後，可依課程名額安排至其他相同課程班級上課。</p>
-        </div>
       </div>
     </div>
   </details>
@@ -1357,16 +1331,16 @@ var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwmA0X0XzFIYclj
 // 跟原報名頁共用同一支後端／同一張試算表；帶這個代號，後端就會把報名寫進「報名資料（增肌多元）」分頁
 var PAGE_ID = "muscle";
 
-// 價目表（顯示用；實際入帳金額以後端為準）
+// 本頁只有一個方案、單一價格（顯示用；實際入帳金額以後端為準）
+// ⚠️ 改價格或方案時，Code.gs 的 PAGES.muscle 也要一起改並重新部署；
+//    兩邊對不上時，本頁會自動暫停送出報名（見下方 backendReady）
+var IDENTITY = "增肌多元運動優惠方案"; // 後端仍需要這個欄位，固定帶這個值
 var PRICES = {
-  "24堂完整班":   { "增肌多元運動優惠方案": 3600, "會員優惠價": 3400, orig: "原價 $6,000" },
-  "12堂精選班":   { "增肌多元運動優惠方案": 2000, "會員優惠價": 1900, orig: "原價 $3,000" },
-  "6堂體驗班":    { "增肌多元運動優惠方案": 1100, "會員優惠價": 1050, orig: "原價 $1,500" },
-  "單堂課程體驗": { "增肌多元運動優惠方案": 250,  "會員優惠價": 250,  orig: "" }
+  "24堂完整班": { price: 1450, orig: "原價 $6,000" }
 };
 
 // 已額滿的方案（仍顯示於清單，但不可選）
-var SOLD_OUT = ["24堂完整班"];
+var SOLD_OUT = [];
 
 // ====== 課程表（同時給「課程表」區塊和報名時選課用）======
 // 冬季課程表 2026/11/11–2027/02/24（照協會課程表海報）：[日期, 週, 課程主題, 教練]
@@ -1402,26 +1376,21 @@ var SCHEDULE_MAIN = [
 // pick：數字 = 要自己挑幾堂；"all" = 方案已含整份課表，不用挑
 var PLAN_COURSES = {
   "24堂完整班":   { pick: "all" },
-  "12堂精選班":   { pick: 12 },
-  "6堂體驗班":    { pick: 6 },
-  "單堂課程體驗": { pick: 1 }
 };
 
 function $(id) { return document.getElementById(id); }
 
-function currentIdentity() {
-  var r = document.querySelector('input[name="identity"]:checked');
-  return r ? r.value : "增肌多元運動優惠方案";
-}
+function currentIdentity() { return IDENTITY; }
 function currentPlan() {
   var r = document.querySelector('input[name="plan"]:checked');
   return r ? r.value : "";
 }
 
-// 依身分別重繪方案清單（保留已選的方案）
+// 畫方案清單；只有一個可報名的方案時直接幫學員選好
 function renderPlans() {
-  var identity = currentIdentity();
   var selected = currentPlan();
+  var open = Object.keys(PRICES).filter(function (plan) { return SOLD_OUT.indexOf(plan) === -1; });
+  if (!selected && open.length === 1) selected = open[0];
   var html = "";
   Object.keys(PRICES).forEach(function (plan) {
     var p = PRICES[plan];
@@ -1431,27 +1400,11 @@ function renderPlans() {
       '<div class="plan-box"><span class="plan-name">' + plan +
       (isSold ? '<span class="sold-badge">已額滿</span>' : '') +
       (p.orig ? '<span class="plan-orig">' + p.orig + '</span>' : "") +
-      '</span><span class="plan-price">' + (isSold ? '—' : p[identity].toLocaleString() + '元') + '</span></div></label>';
+      '</span><span class="plan-price">' + (isSold ? '—' : p.price.toLocaleString() + '元') + '</span></div></label>';
   });
   $("plan-list").innerHTML = html;
   var inputs = document.querySelectorAll('input[name="plan"]');
   for (var i = 0; i < inputs.length; i++) inputs[i].addEventListener("change", onPlanChange);
-
-  // 依身分別顯示提示標題，並讓價格跳一下（讓「浮起來／消掉」看得清楚）
-  var hint = $("plan-hint");
-  if (identity === "會員優惠價") {
-    hint.className = "plan-hint member";
-    hint.textContent = "👑 目前顯示【會員優惠價】";
-  } else {
-    hint.className = "plan-hint";
-    hint.textContent = "🏷️ 目前顯示【增肌多元運動優惠方案】";
-  }
-  var prices = document.querySelectorAll('.plan-price');
-  for (var j = 0; j < prices.length; j++) {
-    prices[j].classList.remove("flash");
-    void prices[j].offsetWidth; // 重新觸發動畫
-    prices[j].classList.add("flash");
-  }
   updateAmount();
   renderCourses();
 }
@@ -1465,7 +1418,7 @@ function onPlanChange() {
 function updateAmount() {
   var plan = currentPlan();
   if (!plan) { $("amount-display").textContent = "請先選擇方案"; return; }
-  $("amount-display").textContent = "NT$ " + PRICES[plan][currentIdentity()].toLocaleString();
+  $("amount-display").textContent = "NT$ " + PRICES[plan].price.toLocaleString();
 }
 
 // ====== 選擇上課日期 ======
@@ -1544,7 +1497,7 @@ function updateCourseHint() {
 
   if (rule.pick === "all") {
     hint.className = "course-hint";
-    hint.textContent = "📘 此方案已包含以下 " + rows.length + " 堂課，不需另外挑選";
+    hint.textContent = "📘 本方案包含以下全部 " + rows.length + " 堂課，不需挑選";
     return;
   }
 
@@ -1571,8 +1524,6 @@ function selectedCoursesInOrder() {
     .filter(function (d) { return courseSelected.indexOf(d) !== -1; });
 }
 
-var identityInputs = document.querySelectorAll('input[name="identity"]');
-for (var i = 0; i < identityInputs.length; i++) identityInputs[i].addEventListener("change", renderPlans);
 renderPlans();
 
 // ====== 課程表區塊（資料在最上方的 SCHEDULE_MAIN）======
@@ -1631,9 +1582,19 @@ function applyStatus(activity) {
   }
 }
 
-// 後端要是還沒換成「認得增肌多元頁」的版本，報名會被寫進原報名頁的分頁；
-// 狀態回應帶回這一頁的代號，才確定後端已更新、才開放送出
+// 金額以後端為準：後端回報的方案價格要跟本頁顯示的一模一樣，才開放送出。
+// 後端還是舊版（舊價格、舊方案）時，本頁顯示「即將開放」，避免學員看到 A 價卻被記成 B 價。
 var backendReady = false;
+
+function backendMatches(data) {
+  if (data.page !== PAGE_ID || !data.prices) return false;
+  var mine = Object.keys(PRICES), theirs = Object.keys(data.prices);
+  if (mine.length !== theirs.length) return false;
+  for (var i = 0; i < mine.length; i++) {
+    if (Number(data.prices[mine[i]]) !== PRICES[mine[i]].price) return false;
+  }
+  return true;
+}
 
 function showNotReady() {
   var badge = $("status-badge");
@@ -1649,7 +1610,7 @@ function showNotReady() {
 if (GOOGLE_SCRIPT_URL) {
   jsonp({ action: "status" }, function (data) {
     if (!data || data.status !== "success" || !data.activity) return;
-    backendReady = data.page === PAGE_ID;
+    backendReady = backendMatches(data);
     if (backendReady) applyStatus(data.activity);
     else showNotReady();
   }, function () { /* 讀不到狀態就先照預設顯示 */ });
@@ -1715,7 +1676,6 @@ function showSuccess(name, phone, plan, courses, price, duplicate) {
   var rows = [
     ["姓名", name],
     ["聯絡電話", phone],
-    ["身分別", currentIdentity()],
     ["報名方案", plan],
     ["上課日期", courses.length ? "共 " + courses.length + " 堂<br>" + courses.join("、") : "—"],
     ["應繳金額", "NT$ " + Number(price).toLocaleString()]
@@ -1751,12 +1711,11 @@ $("qa-fab").addEventListener("click", function () {
 });
 
 var DEFAULT_FAQ = [
-  { q: "上課時間是什麼時候？", a: "每週三晚上 19:30–21:00、每週日下午 14:30–16:00，報名時可以選擇您方便的時段喔！" },
+  { q: "上課時間是什麼時候？", a: "每週三晚上 19:30–21:00、每週日下午 14:30–16:00，實際日期請見首頁「課程表」。" },
   { q: "沒有運動經驗可以參加嗎？", a: "當然可以！課程由專業教練帶領，會依每個人的體能狀況調整強度，新手和長輩都能安心參加。" },
   { q: "費用怎麼繳？", a: "報名成功後，畫面會顯示轉帳資訊（郵局代號、戶名、帳號），依指示轉帳即可，我們會另行確認收款。" },
-  { q: "可以先體驗一堂再決定嗎？", a: "可以！單堂課程體驗價只要 $250，歡迎先來體驗看看再報名完整課程。" },
   { q: "報名後可以更動或取消課程嗎？", a: "可以，請於該堂課開始兩週前透過官方 LINE 告知我們，以便我們安排上課人數。" },
-  { q: "臨時不能上課，可以補課或更換日期嗎？", a: "依方案不同：24堂完整班每期享 2 堂補課（期限至 2027/6/30，需提前預約）；12堂精選班、6堂體驗班不補課，但可更換上課日期（須於欲更換日期至少 14 天前透過官方 LINE 申請）。詳情請見首頁「常見問題」專區。" }
+  { q: "臨時不能上課，可以補課嗎？", a: "可以。24堂完整班每期享 2 堂補課（期限至 2027/6/30，需提前預約），可至協會當年度開設之相同課程班級補課。詳情請見首頁「常見問題」專區。" }
 ];
 
 function renderFaq(items) {
