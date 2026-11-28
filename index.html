@@ -225,6 +225,7 @@
     text-decoration: none;
     box-shadow: 0 6px 0 #B93538;
   }
+  .btn-cta.disabled { background: #C9C2B4; box-shadow: none; cursor: not-allowed; pointer-events: none; }
   .btn-cta:active { transform: translateY(3px); box-shadow: 0 3px 0 #B93538; }
 
   /* ===== 報名區 ===== */
@@ -970,7 +971,7 @@
   <div class="block">
     <h2 class="block-title">課程特色</h2>
     <p class="block-sub">正確體位發力指導 · 科學肌力訓練</p>
-    <span class="open-badge">11/11 週三正式開課 · 熱烈招生中</span>
+    <span class="open-badge" id="open-badge">11/11 週三正式開課 · 熱烈招生中</span>
     <p class="block-sub" style="color:var(--red); font-weight:900; margin-top:-8px;">每班招生名額 25 人・額滿為止</p>
     <div class="feature-grid">
       <div class="feature-card"><div class="fi">💪</div><h3>增強肌力</h3><p>提升肌肉力量<br>改善體態線條</p></div>
@@ -1607,7 +1608,28 @@ function showNotReady() {
   $("closed-notice").textContent = "線上報名系統準備中，開放後即可在這裡報名。\n想先報名或有任何問題，歡迎加入澎湖縣皇家樂活健康運動協會官方 LINE 詢問。";
 }
 
-if (GOOGLE_SCRIPT_URL) {
+// ====== 報名總開關 ======
+// true = 本頁報名已截止：不顯示報名表、所有「立即報名」按鈕失效，不管後端試算表怎麼設定
+// 要重新開放報名：改成 false 再上傳即可
+var REGISTRATION_CLOSED = true;
+
+function closeRegistration() {
+  applyStatus({ registrationStatus: "已截止" });
+  var btns = document.querySelectorAll(".btn-cta");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].textContent = "報名已截止";
+    btns[i].classList.add("disabled");
+    btns[i].removeAttribute("href");
+    btns[i].setAttribute("aria-disabled", "true");
+  }
+  var ob = $("open-badge");
+  if (ob) ob.textContent = "本期報名已截止";
+  $("btn-submit").disabled = true;
+}
+
+if (REGISTRATION_CLOSED) {
+  closeRegistration();
+} else if (GOOGLE_SCRIPT_URL) {
   jsonp({ action: "status" }, function (data) {
     if (!data || data.status !== "success" || !data.activity) return;
     backendReady = backendMatches(data);
@@ -1642,6 +1664,8 @@ $("signup-form").addEventListener("submit", function (ev) {
     msg.textContent = "系統還在連線中，請稍等幾秒再按一次「送出報名」；一直不行的話，請透過官方 LINE 報名";
     return;
   }
+
+  if (REGISTRATION_CLOSED) { msg.textContent = "本期報名已截止"; return; }
 
   var btn = $("btn-submit");
   btn.disabled = true;
